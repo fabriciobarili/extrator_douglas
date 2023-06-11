@@ -1,3 +1,5 @@
+CHAVE = "scp-test-7741b22fda044fa08e29e77039a4655e"
+
 import asyncio
 
 from scrapfly import ScrapflyClient
@@ -5,7 +7,7 @@ from scrapfly import ScrapflyClient
 import folhamax
 import gazetadigital
 
-client = ScrapflyClient(key="scp-test-7741b22fda044fa08e29e77039a4655e", max_concurrency=5)
+client = ScrapflyClient(key=CHAVE, max_concurrency=5)
 
 BASE_CONFIG = {
     "country": "BR",
