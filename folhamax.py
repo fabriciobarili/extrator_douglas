@@ -8,7 +8,7 @@ from scrapfly import ScrapeConfig, ScrapflyClient
 import funcoes_douglas
 
 
-async def getListaNoticias(termo : str, client : ScrapflyClient, **BASE : any) -> Dict:
+async def getListaNoticias(termo : str, client : ScrapflyClient,  economia : str, **BASE : any) -> Dict:
     # A partir do termo, descobrimos quantas páginas existem
     URL = f"https://www.folhamax.com/busca.php?pageNum_Busca=1&keyword=+{termo}+"
     PAGINA = await client.async_scrape(ScrapeConfig(URL, **BASE, proxy_pool='public_residential_pool'))
@@ -16,7 +16,10 @@ async def getListaNoticias(termo : str, client : ScrapflyClient, **BASE : any) -
 
     btn_paginas = soup.findAll("button", attrs={"class": "btn btn-outline-danger mr10"})
     de_total = str(btn_paginas[0].text).split(" de ")
-    paginas = int(de_total[1])
+    if economia != "S":
+        paginas = int(de_total[1])
+    else:
+        paginas = int(int(de_total[1]) / 4)
 
     print(f'Total de páginas para esta busca: {paginas}')
 

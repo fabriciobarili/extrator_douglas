@@ -8,7 +8,7 @@ from scrapfly import ScrapeConfig, ScrapflyClient
 import funcoes_douglas
 
 
-async def getListaNoticias(termo : str, client : ScrapflyClient, **BASE : any) -> Dict:
+async def getListaNoticias(termo : str, client : ScrapflyClient,  economia : str, **BASE : any) -> Dict:
 
     #A partir do termo, descobrimos quantas páginas existem
     URL = f"https://olhardireto.com.br/busca/index.asp?busca=%20{termo}%20"
@@ -21,7 +21,13 @@ async def getListaNoticias(termo : str, client : ScrapflyClient, **BASE : any) -
     pg = ""
     for b in btn_paginas:
         pg = b.text
-    paginas = int(pg)
+
+    pgs = int(pg)
+
+    if economia != "S":
+        paginas = int(pgs)
+    else:
+        paginas = int(pgs / 4)
 
     print(f'Total de páginas para esta busca: {paginas}')
 
