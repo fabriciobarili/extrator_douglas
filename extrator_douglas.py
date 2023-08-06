@@ -1,6 +1,8 @@
+import midianews
 import olhardireto
+import OGlobo
 
-CHAVE = "scp-test-7741b22fda044fa08e29e77039a4655e"
+CHAVE = "scp-live-a24d530459964e38bf761bb889862785"
 
 import asyncio
 
@@ -32,17 +34,19 @@ async def run():
 
     print("Iniciando a busca nos sites Gazeta, Folha Max e Olhar Direto pelo termo: " + TERMO + " " + txt + ".")
 
-    # primeiro faz a busca pelo termo nos sites Gazeta Digital, Folha Max e Olhar Direto
-    # r = await gazetadigital.getListaNoticias(TERMO, client,SAVE_MODE, **BASE_CONFIG)
-    # r = await folhamax.getListaNoticias(TERMO, client,SAVE_MODE, **BASE_CONFIG)
-    r = await olhardireto.getListaNoticias(TERMO, client, SAVE_MODE, **BASE_CONFIG)
+    #primeiro faz a busca pelo termo nos sites Gazeta Digital, Folha Max e Olhar Direto
+    #r = await gazetadigital.getListaNoticias(TERMO, client,SAVE_MODE, **BASE_CONFIG)
+    #r = await folhamax.getListaNoticias(TERMO, client,SAVE_MODE, **BASE_CONFIG)
+    #r = await olhardireto.getListaNoticias(TERMO, client, SAVE_MODE, **BASE_CONFIG)
+    #r = await midianews.getListaNoticias(TERMO, client, SAVE_MODE, **BASE_CONFIG)
+    #r = await OGlobo.getListaNoticias(TERMO, client, SAVE_MODE, **BASE_CONFIG)
 
-    # em desenvolvimento >> r = await midianews.getListaNoticias(TERMO, client, **BASE_CONFIG)
-
-    # depois, em cada notícia encontrada, pega o conteúdo dela
-    # r = await gazetadigital.getConteudo(client, **BASE_CONFIG)
-    # r = await folhamax.getConteudo(client, **BASE_CONFIG)
-    r = await olhardireto.getConteudo(client, **BASE_CONFIG)
+    #depois, em cada notícia encontrada, pega o conteúdo dela
+    #r = await gazetadigital.getConteudo(client, **BASE_CONFIG)
+    #r = await folhamax.getConteudo(client, **BASE_CONFIG)
+    #r = await olhardireto.getConteudo(client, **BASE_CONFIG)
+    #r = await midianews.getConteudo(client, **BASE_CONFIG)
+    #r = await OGlobo.getConteudo(client, **BASE_CONFIG)
 
 
 if __name__ == "__main__":

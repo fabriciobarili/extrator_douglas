@@ -42,7 +42,7 @@ async def getListaNoticias(termo: str, client: ScrapflyClient, economia: str, **
         for d in divs:
 
             titulo = d.findAll("p", attrs={"class": "listagem-com-foto-title-con"})
-            data = d.findAll("p", attrs={"class": "listagem-com-foto-date"})
+            data = d.findAll("p", attrs={"class": "listagem-com-foto-dat"})
             urls = d.findAll("a", href=True)  # aqui pega todas as URL's. A cada 3, 1 é diferente.
             # então, faço um Loop de 3 em 3 pra montar um array de URL
             urls_unicas = []
