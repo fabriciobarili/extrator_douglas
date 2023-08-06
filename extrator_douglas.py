@@ -3,7 +3,7 @@ import midianews
 import olhardireto
 import OGlobo
 
-CHAVE = "scp-live-a24d530459964e38bf761bb889862785"
+CHAVE = "#"
 
 import asyncio
 
@@ -40,7 +40,7 @@ async def run():
     #r = await folhamax.getListaNoticias(TERMO, client,SAVE_MODE, **BASE_CONFIG)
     #r = await olhardireto.getListaNoticias(TERMO, client, SAVE_MODE, **BASE_CONFIG)
     #r = await midianews.getListaNoticias(TERMO, client, SAVE_MODE, **BASE_CONFIG)
-    #r = await OGlobo.getListaNoticias(TERMO, client, SAVE_MODE, **BASE_CONFIG)
+    r = await OGlobo.getListaNoticias(TERMO, client, SAVE_MODE, **BASE_CONFIG)
 
     #depois, em cada notícia encontrada, pega o conteúdo dela
     #r = await gazetadigital.getConteudo(client, **BASE_CONFIG)
@@ -49,7 +49,8 @@ async def run():
     #r = await midianews.getConteudo(client, **BASE_CONFIG)
     #r = await OGlobo.getConteudo(client, **BASE_CONFIG)
 
-    funcoes_douglas.ExportExcel("arquivo")
+    #SALVAR TUDO O QUE ESTÁ NA BASE DE DADOS
+    #funcoes_douglas.ExportExcel("arquivo")
 
 
 if __name__ == "__main__":
