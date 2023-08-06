@@ -8,7 +8,7 @@ from scrapfly import ScrapeConfig, ScrapflyClient
 import funcoes_douglas
 
 
-async def getListaNoticias(termo: str, client: ScrapflyClient, **BASE: any) -> Dict:
+async def getListaNoticias(termo: str, client: ScrapflyClient, economia: str, **BASE: any) -> Dict:
     # A partir do termo, descobrimos quantas páginas existem
     URL = f"https://www.midianews.com.br/busca.php?pageNum_Busca=0&keyword=+{termo}+"
     PAGINA = await client.async_scrape(ScrapeConfig(URL, **BASE, proxy_pool='public_residential_pool'))
@@ -19,16 +19,15 @@ async def getListaNoticias(termo: str, client: ScrapflyClient, **BASE: any) -> D
 
     # <a href="/busca.php?pageNum_Busca=119&keyword=+termo+&totalRows_Busca=3588"><img src="images/__btnLast.gif" border="0"></a>
     botao = soup.findAll('a', href=True)
-    # print(botao[51].attrs)
-    """for b in botao:
-        print(b)
-        if "totalRows_Busca=" in b:
-            print(b)"""
-    print(botao)
+    InicioPaginacao = botao[51].attrs['href'].find('&totalRows_Busca=')+17
+    TotalDePaginas = botao[51].attrs['href'][InicioPaginacao:len(botao[51].attrs['href'])]
 
-    btn_paginas = soup.findAll("div", attrs={"class": "btn-pesquisa btn btn-success mr8"})
-    de_total = str(btn_paginas[0].text).split(" de ")
-    paginas = int(de_total[1])
+    if economia != "S":
+        paginas = TotalDePaginas
+    else:
+        paginas = int(int(TotalDePaginas) / 4)
+
+
 
     print(f'Total de páginas para esta busca: {paginas}')
 
@@ -39,38 +38,25 @@ async def getListaNoticias(termo: str, client: ScrapflyClient, **BASE: any) -> D
 
     # Inínio do Loop
     for j in array_paginas:
-        URL = f"https://www.gazetadigital.com.br/busca.php?pageNum_Busca={j}&keyword=+{termo}"
+        URL = f"https://www.midianews.com.br/busca.php?pageNum_Busca={j}&keyword=+{termo}+"
         print(f'Iniciando o Scrap pela página: {URL}')
         PAGINA = await client.async_scrape(ScrapeConfig(URL, **BASE, proxy_pool='public_residential_pool'))
         soup = BeautifulSoup(PAGINA.content, "lxml")
 
-        divs = soup.findAll("div", attrs={"class": "linespacing PaginacaoIndex"})
-        URLS = []
-        for d in divs:
 
-            titulo = d.findAll("p", attrs={"class": "listagem-com-foto-title-con"})
-            data = d.findAll("p", attrs={"class": "listagem-com-foto-date"})
-            urls = d.findAll("a", href=True)  # aqui pega todas as URL's. A cada 3, 1 é diferente.
-            # então, faço um Loop de 3 em 3 pra montar um array de URL
-            urls_unicas = []
 
-            multiplos = []
-            mult = 0
-            for m in range(len(titulo)):
-                multiplos.append(mult)
-                mult = mult + 3
+        titulo = soup.findAll("a", attrs={"class": "ConteudoTitulo2"})
+        data = soup.findAll("td", attrs={"class": "ConteudoData"})
+        urls = soup.findAll("a", attrs={"class": "ConteudoTitulo2"},  href=True)
 
-            # A cada 3 links, 1 é diferente. Então, pego o múltiplos de 3 pq essas serão as posições dos arrays
-            for mul in multiplos:
-                urls_unicas.append(f"https://www.gazetadigital.com.br/{urls[mul]['href']}")
-
-            # Pronto, a cada 3, vai se sobrescrevendo e montando as URL's únicas e inserem no array urls_unicas
-            tamanho = int(len(titulo))
-            for t in range(tamanho):
-                print(f"Título: {titulo[t].text} \n"
-                      f"Data: {data[t].text} \n"
-                      f"URL: {urls_unicas[t]} \n")
-                funcoes_douglas.insert_noticia_pt1(titulo[t].text, urls_unicas[t], data[t].text)
+        tamanho = int(len(titulo))
+        print(tamanho)
+        for t in range(tamanho):
+            print(f"Título: {titulo[t].text} \n"
+                  f"Data: {data[t].text} \n"
+                  f"URL: https://www.midianews.com.br/{urls[t]['href']} \n")
+            funcoes_douglas.insert_noticia_pt1(titulo[t].text, f"https://www.midianews.com.br/{urls[t]['href']}",
+                                               data[t].text)
 
         print(f"Fim da página {j}/{paginas}")
 
@@ -86,10 +72,20 @@ async def getConteudo(client: ScrapflyClient, **BASE: any) -> Dict:
         PAGINA = await client.async_scrape(ScrapeConfig(n[0], **BASE))
         print(n[0])
         soup = BeautifulSoup(PAGINA.content, "lxml")
-        CONTEUDO = soup.findAll("div", attrs={"id": "text-content"})
+        CONTEUDO = soup.findAll("div", attrs={"id": "texto"})
         for C in CONTEUDO:
             print(C.text)
             funcoes_douglas.insert_noticia(n[1], C.text)
+
+            #atualizaData
+            DataNoticia = soup.findAll("div", attrs={"class": "row espaco-conteudo"})
+            for d in DataNoticia:
+                txt = d.text
+                print(d.text)
+                LocalDaData = txt.find(" | ")
+                Dt = txt[LocalDaData-10:LocalDaData]
+
+                funcoes_douglas.UpdateData_Noticia(n[1], Dt)
         time.sleep(1)
 
     return "Sucesso"

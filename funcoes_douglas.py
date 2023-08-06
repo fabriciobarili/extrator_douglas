@@ -32,6 +32,13 @@ def insert_noticia(id: str, texto: str):
     mydb.commit()
     return "Sucesso"
 
+def UpdateData_Noticia(id : str, texto : str):
+    sql = "UPDATE `tb_noticias` set  `DATA` = %s WHERE ID = %s"
+    val = (texto, id)
+    print(sql)
+    mycursor.execute(sql, val)
+    mydb.commit()
+    return "Sucesso"
 
 def getNoticiasFolhamax():
     sql = f"SELECT `url`, `id` FROM `tb_noticias` where not EXISTS (select 1 from tb_texto where ID_NOTICIA = `tb_noticias`.`ID`)"
