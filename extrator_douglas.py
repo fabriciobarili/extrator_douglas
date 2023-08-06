@@ -1,3 +1,4 @@
+import funcoes_douglas
 import midianews
 import olhardireto
 import OGlobo
@@ -47,6 +48,8 @@ async def run():
     #r = await olhardireto.getConteudo(client, **BASE_CONFIG)
     #r = await midianews.getConteudo(client, **BASE_CONFIG)
     #r = await OGlobo.getConteudo(client, **BASE_CONFIG)
+
+    funcoes_douglas.ExportExcel("arquivo")
 
 
 if __name__ == "__main__":

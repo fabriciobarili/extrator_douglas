@@ -1,4 +1,7 @@
 import mysql.connector
+import openpyxl
+from datetime import date
+
 
 mydb = mysql.connector.connect(
     host="localhost",
@@ -46,3 +49,27 @@ def getNoticiasFolhamax():
     myresult = mycursor.fetchall()
 
     return myresult
+
+
+def ExportExcel(nome : str):
+
+    book = openpyxl.Workbook()
+    sheet = book.active
+    sql = f"SELECT A.TITULO, A.DATA, B.TEXTO, B.IMAGEM from tb_noticias as A inner join tb_texto as B on a.ID = b.ID_NOTICIA"
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+
+    i = 0
+    for row in myresult:
+        i += 1
+        j = 1
+        for col in row:
+            cell = sheet.cell(row=i, column=j)
+            cell.value = col
+            j += 1
+
+
+
+    book.save(f"arquivos/{nome}_{date.today()}.xlsx")
+
+    return "Sucesso"

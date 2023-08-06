@@ -32,15 +32,18 @@ async def getListaNoticias(termo: str, client: ScrapflyClient, economia: str, **
         for d in divs:
             titulo = d.findAll("div", attrs={"class": "widget--info__title product-color"})
             data = "TBD"
-            urls = d.findAll("a", href=True)  # aqui pega todas as URL's. A cada 2, 1 é diferente.
+            urls = d.findAll("div", attrs={"class": "widget--info__text-container"})  # aqui pega todas as URL's. A cada 2, 1 é diferente.
 
         #CONSERTAR AS URL'S##
         #só pegar as que são PAR
         k=0
+        print(urls[0].contents[3]['href'])
         url_final = []
+
         for d in urls:
-            if ((k%2) == 0) and ((str(d['href']).find("p=0")) == -1) and ((str(d['href']).find("conteudo-de-marca") == -1)):
-                url_final.append(d['href'])
+            url_vdd = d.contents[3]['href']
+            if ((str(url_vdd).find("p=0")) == -1) and ((str(url_vdd).find("conteudo-de-marca") == -1)):
+                url_final.append(url_vdd)
             k=k+1
         print(url_final)
         tamanho = int(len(titulo))
