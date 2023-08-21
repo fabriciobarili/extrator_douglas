@@ -23,10 +23,7 @@ BASE_CONFIG = {
 
 async def run():
     # Aqui você insere o termo que deseja procurar
-
     # Define a variable to store the input
-    
-
     TERMO = input("Insira o terpo de pesquisa: ")
     SAVE_MODE = input("Deseja habilitar economia de API? S-SIM, N-NÃO ").upper()
 
