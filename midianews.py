@@ -9,6 +9,12 @@ import funcoes_douglas
 
 
 async def getListaNoticias(termo: str, client: ScrapflyClient, economia: str, **BASE: any) -> Dict:
+
+    if economia == "S":
+        print(f"Iniciando a pesquisa no site Mídia News pelo termo {termo} com economia de API")
+    elif economia == "N":
+        print(f"Iniciando a pesquisa no site Mídia News pelo termo {termo} sem economia de API")
+
     # A partir do termo, descobrimos quantas páginas existem
     URL = f"https://www.midianews.com.br/busca.php?pageNum_Busca=0&keyword=+{termo}+"
     PAGINA = await client.async_scrape(ScrapeConfig(URL, **BASE, proxy_pool='public_residential_pool'))
@@ -70,22 +76,28 @@ async def getConteudo(client: ScrapflyClient, **BASE: any) -> Dict:
 
     for n in noticias:
         PAGINA = await client.async_scrape(ScrapeConfig(n[0], **BASE))
-        print(n[0])
+
         soup = BeautifulSoup(PAGINA.content, "lxml")
         CONTEUDO = soup.findAll("div", attrs={"id": "texto"})
+        IMAGENS = soup.findAll("img", attrs={"id": "img_conteudo"})
         for C in CONTEUDO:
-            print(C.text)
+
             funcoes_douglas.insert_noticia(n[1], C.text)
 
             #atualizaData
             DataNoticia = soup.findAll("div", attrs={"class": "row espaco-conteudo"})
             for d in DataNoticia:
                 txt = d.text
-                print(d.text)
+
                 LocalDaData = txt.find(" | ")
                 Dt = txt[LocalDaData-10:LocalDaData]
 
                 funcoes_douglas.UpdateData_Noticia(n[1], Dt)
+
+        for I in IMAGENS:
+            print(I['src'])
+            funcoes_douglas.insert_imagens(n[1], I['src'])
+
         time.sleep(1)
 
     return "Sucesso"

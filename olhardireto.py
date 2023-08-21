@@ -9,6 +9,12 @@ import funcoes_douglas
 
 
 async def getListaNoticias(termo: str, client: ScrapflyClient, economia: str, **BASE: any) -> Dict:
+
+    if economia == "S":
+        print(f"Iniciando a pesquisa no site Olhar Direto pelo termo {termo} com economia de API")
+    elif economia == "N":
+        print(f"Iniciando a pesquisa no site Olhar Direto pelo termo {termo} sem economia de API")
+
     # A partir do termo, descobrimos quantas páginas existem
     URL = f"https://olhardireto.com.br/busca/index.asp?busca=%20{termo}%20"
     PAGINA = await client.async_scrape(ScrapeConfig(URL, **BASE, proxy_pool='public_residential_pool'))
@@ -76,9 +82,14 @@ async def getConteudo(client: ScrapflyClient, **BASE: any) -> Dict:
         print(n[0])
         soup = BeautifulSoup(PAGINA.content, "lxml")
         CONTEUDO = soup.findAll("div", attrs={"class": "html texto"})
+        IMAGENS = soup.findAll("img", attrs={"class": "loadimage"})
         for C in CONTEUDO:
             print(C.text)
             funcoes_douglas.insert_noticia(n[1], C.text)
+
+        for I in IMAGENS:
+            print(I['src'])
+            funcoes_douglas.insert_imagens(n[1], I['src'])
         time.sleep(1)
 
     return "Sucesso"

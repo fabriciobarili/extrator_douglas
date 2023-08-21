@@ -1,5 +1,7 @@
 import folha_sp
+import folhamax
 import funcoes_douglas
+import gazetadigital
 import midianews
 import olhardireto
 import OGlobo
@@ -23,18 +25,10 @@ async def run():
     # Aqui você insere o termo que deseja procurar
 
     # Define a variable to store the input
+    
+
     TERMO = input("Insira o terpo de pesquisa: ")
     SAVE_MODE = input("Deseja habilitar economia de API? S-SIM, N-NÃO ").upper()
-    # Print the input
-    txt = 'sem economia de API'
-    if SAVE_MODE != "S" or SAVE_MODE != "N":
-        print("Valor de economia de API incompatível, habilitando para Ativo por questão de segurança")
-        SAVE_MODE = "S"
-
-    if SAVE_MODE == "S":
-        txt = 'com economia de API'
-
-    print("Iniciando a busca nos sites Gazeta, Folha Max e Olhar Direto pelo termo: " + TERMO + " " + txt + ".")
 
     #primeiro faz a busca pelo termo nos sites Gazeta Digital, Folha Max e Olhar Direto
     #r = await gazetadigital.getListaNoticias(TERMO, client,SAVE_MODE, **BASE_CONFIG)
@@ -53,7 +47,7 @@ async def run():
     #r = await folha_sp.getConteudo(client, **BASE_CONFIG)
 
     #SALVAR TUDO O QUE ESTÁ NA BASE DE DADOS
-    #funcoes_douglas.ExportExcel("arquivo")
+    funcoes_douglas.ExportExcel("arquivo")
 
 
 if __name__ == "__main__":
