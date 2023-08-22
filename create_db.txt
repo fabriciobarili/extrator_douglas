@@ -1,5 +1,6 @@
 CREATE DATABASE `scrap_ufmt` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
+/* SE JÁ TIVER A TABELA CRIADA, APENAS COPIAR OS CÓDIGOS ABAIXO */
 CREATE TABLE `tb_imagens` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_noticia` varchar(200) NOT NULL,
