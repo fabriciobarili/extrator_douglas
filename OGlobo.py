@@ -66,7 +66,7 @@ async def getListaNoticias(termo: str, client: ScrapflyClient, economia: str, **
                   f"Data: TBD \n"
                   f"URL: https://oglobo.globo.com/{url_decode} \n")
             funcoes_douglas.insert_noticia_pt1(titulo[t].text, f"{url_decode}",
-                                               "TBD")
+                                               "TBD", "O Globo")
 
         print(f"Fim da página {j}/{array_paginas}")
         time.sleep(10)
@@ -76,7 +76,7 @@ async def getListaNoticias(termo: str, client: ScrapflyClient, economia: str, **
 async def getConteudo(client: ScrapflyClient, **BASE: any) -> Dict:
     # Agora que os resultados estão armazenados, hora de pegar o conteúdo deles.
     # Inicialmente eu pego todas as notícias que tenho só a primeira parte dela, sem o conteúdo
-    noticias = funcoes_douglas.getNoticias()
+    noticias = funcoes_douglas.getNoticias("O Globo")
 
     for n in noticias:
         #Para tirar o Paywall, usei o serviço Leiaisso.net, passando a URL da notícia como parâmetro. Aí eu só extraio o conteúdo da div class=Wrap

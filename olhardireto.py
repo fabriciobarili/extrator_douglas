@@ -65,7 +65,7 @@ async def getListaNoticias(termo: str, client: ScrapflyClient, economia: str, **
                   f"Data: {data[t].text} \n"
                   f"URL: https://olhardireto.com.br/{urls[t]['href']} \n")
             funcoes_douglas.insert_noticia_pt1(titulo[t].text, f"https://olhardireto.com.br/{urls[t]['href']}",
-                                               data[t].text)
+                                               data[t].text, "Olhar Direto")
 
         print(f"Fim da página {j}/{paginas}")
 
@@ -75,7 +75,7 @@ async def getListaNoticias(termo: str, client: ScrapflyClient, economia: str, **
 async def getConteudo(client: ScrapflyClient, **BASE: any) -> Dict:
     # Agora que os resultados estão armazenados, hora de pegar o conteúdo deles.
     # Inicialmente eu pego todas as notícias que tenho só a primeira parte dela, sem o conteúdo
-    noticias = funcoes_douglas.getNoticias()
+    noticias = funcoes_douglas.getNoticias("Olhar Direto")
 
     for n in noticias:
         PAGINA = await client.async_scrape(ScrapeConfig(n[0], **BASE))

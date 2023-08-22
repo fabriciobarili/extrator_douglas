@@ -6,7 +6,7 @@ import midianews
 import olhardireto
 import OGlobo
 
-CHAVE = "GERAR NO SITE SCRAPIFLY.COM"
+CHAVE = "GERAR A CHAVE EM SCRAPIFLY.COM"
 
 import asyncio
 
@@ -22,8 +22,8 @@ BASE_CONFIG = {
 
 
 async def run():
-    # Aqui você insere o termo que deseja procurar
-    # Define a variable to store the input
+    #Aqui você insere o termo que deseja procurar
+    #Define a variable to store the input
     TERMO = input("Insira o terpo de pesquisa: ")
     SAVE_MODE = input("Deseja habilitar economia de API? S-SIM, N-NÃO ").upper()
 
@@ -44,7 +44,10 @@ async def run():
     #r = await folha_sp.getConteudo(client, **BASE_CONFIG)
 
     #SALVAR TUDO O QUE ESTÁ NA BASE DE DADOS
-    #funcoes_douglas.ExportExcel("arquivo")
+    #funcoes_douglas.ExportExcel()
+
+    #PARA APAGAR O CONTEUDO DA BASE
+    #funcoes_douglas.LimparBase()
 
 
 if __name__ == "__main__":

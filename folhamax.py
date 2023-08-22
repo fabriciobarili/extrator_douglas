@@ -57,7 +57,7 @@ async def getListaNoticias(termo: str, client: ScrapflyClient, economia: str, **
                       f"Data: {data[t].text} \n"
                       f"URL: https://www.folhamax.com/{urls[t]['href']} \n")
                 funcoes_douglas.insert_noticia_pt1(titulo[t].text, f"https://www.folhamax.com/{urls[t]['href']}",
-                                                   data[t].text)
+                                                   data[t].text, "Folhamax")
 
         print(f"Fim da página {j}/{paginas}")
 
@@ -65,7 +65,7 @@ async def getListaNoticias(termo: str, client: ScrapflyClient, economia: str, **
 
 
 async def getConteudo(client: ScrapflyClient, **BASE: any) -> Dict:
-    noticias = funcoes_douglas.getNoticiasFolhamax()
+    noticias = funcoes_douglas.getNoticiasFolhamax("Folhamax")
     for n in noticias:
         PAGINA = await client.async_scrape(ScrapeConfig(n[0], **BASE))
         print(n[0])
