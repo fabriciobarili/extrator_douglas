@@ -6,7 +6,7 @@ import midianews
 import olhardireto
 import OGlobo
 
-CHAVE = "scp-live-a24d530459964e38bf761bb889862785"
+CHAVE = "GERAR NO SITE SCRAPIFLY.COM"
 
 import asyncio
 
