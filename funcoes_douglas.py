@@ -7,7 +7,7 @@ mydb = mysql.connector.connect(
     host="localhost",
     user="root",
     password="",
-    database="douglas"
+    database="ufmt"
 )
 mycursor = mydb.cursor()
 
@@ -20,9 +20,9 @@ def insert_noticia_pt1(titulo: str, url: str, data: str):
     return "Sucesso"
 
 
-def getNoticias(site: str):
+def getNoticias():
     sql = "SELECT `url`, `id` FROM `tb_noticias` where not EXISTS (select 1 from tb_texto where ID_NOTICIA = `tb_noticias`.`ID`)"
-
+    mycursor.execute(sql)
     myresult = mycursor.fetchall()
 
     return myresult
@@ -49,12 +49,10 @@ def UpdateData_Noticia(id : str, texto : str):
     mydb.commit()
     return "Sucesso"
 
-def getNoticiasFolhamax(site:str):
-    sql = f"SELECT `url`, `id` FROM `tb_noticias` where not EXISTS (select 1 from tb_texto where ID_NOTICIA = `tb_noticias`.`ID`) and `url` like (%s)"
-    val = (f"%{site}%")
-    mycursor.execute(sql, val)
+def getNoticiasFolhamax():
+    sql = "SELECT `url`, `id` FROM `tb_noticias` where not EXISTS (select 1 from tb_texto where ID_NOTICIA = `tb_noticias`.`ID`)"
+    mycursor.execute(sql)
     myresult = mycursor.fetchall()
-
     return myresult
 
 

@@ -14,7 +14,7 @@ async def getListaNoticias(termo: str, client: ScrapflyClient, economia: str, **
         print(f"Iniciando a pesquisa no site Folhamax pelo termo {termo} com economia de API")
     elif economia == "N":
         print(f"Iniciando a pesquisa no site Folhamax pelo termo {termo} sem economia de API")
-
+    print(termo)
     # A partir do termo, descobrimos quantas páginas existem
     URL = f"https://www.folhamax.com/busca.php?pageNum_Busca=1&keyword=+{termo}+"
     PAGINA = await client.async_scrape(ScrapeConfig(URL, **BASE, proxy_pool='public_residential_pool'))
@@ -36,7 +36,7 @@ async def getListaNoticias(termo: str, client: ScrapflyClient, economia: str, **
 
     for j in array_paginas:
 
-        URL = f"https://www.folhamax.com/busca.php?pageNum_Busca={j}&keyword=+Lula+"
+        URL = f"https://www.folhamax.com/busca.php?pageNum_Busca={j}&keyword=+{termo}+"
         print(URL)
         PAGINA = await client.async_scrape(ScrapeConfig(URL, **BASE))
         soup = BeautifulSoup(PAGINA.content, "lxml")
@@ -79,7 +79,7 @@ async def getConteudo(client: ScrapflyClient, **BASE: any) -> Dict:
         for I in IMAGENS:
             print(I['src'])
             if "storage/webdisco" in I['src']:
-                funcoes_douglas.insert_imagens(n[1], {I['src']})
+                funcoes_douglas.insert_imagens(n[1], I['src'])
         time.sleep(1)
 
     return "Sucesso"

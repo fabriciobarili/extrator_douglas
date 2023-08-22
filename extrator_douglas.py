@@ -44,7 +44,7 @@ async def run():
     #r = await folha_sp.getConteudo(client, **BASE_CONFIG)
 
     #SALVAR TUDO O QUE ESTÁ NA BASE DE DADOS
-    funcoes_douglas.ExportExcel("arquivo")
+    #funcoes_douglas.ExportExcel("arquivo")
 
 
 if __name__ == "__main__":
